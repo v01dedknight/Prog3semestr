@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace Lab0_Task1_Programming
 {
-    public partial class Form1 : Form
+    public partial class labelDensity : Form
     {
-        public Form1()
+        public labelDensity()
         {
             InitializeComponent();
         }
@@ -44,12 +44,12 @@ namespace Lab0_Task1_Programming
         {
             try
             {
-                // Считываем данные из полей
+                // Данные из полей
                 double rho = Convert.ToDouble(textBox1.Text);
                 double r = Convert.ToDouble(textBox2.Text);
                 double m = Convert.ToDouble(textBox3.Text);
 
-                // Проверяем корректность значений
+                // Проверка корректности значений
                 if (rho <= 0 || r <= 0 || m <= 0)
                 {
                     MessageBox.Show(
@@ -61,15 +61,11 @@ namespace Lab0_Task1_Programming
                     return;
                 }
 
-                // Формула:
-                // m = ρ * V
-                // V = π * r^2 * h
-                // h = m / (ρ * π * r^2)
-
+                // Формула
                 double h = m / (rho * Math.PI * Math.Pow(r, 2));
 
                 // Вывод результата
-                label4.Text = $"Толщина диска h = {h:F4}";
+                labelResult.Text = $"Толщина диска h = {h:F4}";
             }
             catch (FormatException)
             {
