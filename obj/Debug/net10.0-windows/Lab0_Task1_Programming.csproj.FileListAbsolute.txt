@@ -1,0 +1,17 @@
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\bin\Debug\net10.0-windows\Lab0_Task1_Programming.exe
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\bin\Debug\net10.0-windows\Lab0_Task1_Programming.deps.json
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\bin\Debug\net10.0-windows\Lab0_Task1_Programming.runtimeconfig.json
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\bin\Debug\net10.0-windows\Lab0_Task1_Programming.dll
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\bin\Debug\net10.0-windows\Lab0_Task1_Programming.pdb
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.Form1.resources
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.csproj.GenerateResource.cache
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.AssemblyInfoInputs.cache
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.AssemblyInfo.cs
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.csproj.CoreCompileInputs.cache
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.sourcelink.json
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.dll
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\refint\Lab0_Task1_Programming.dll
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.pdb
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\Lab0_Task1_Programming.genruntimeconfig.cache
+C:\Users\Kevin\source\repos\Lab0_Task1_Programming\Lab0_Task1_Programming\obj\Debug\net10.0-windows\ref\Lab0_Task1_Programming.dll
