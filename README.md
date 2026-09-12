@@ -1,28 +1,14 @@
 # Репозиторий по предмету Программирование 3 семестр
 
-## Открывать:
-  Lab0_Task1_Programming.slnx
+## Открыть проект
+В Release отдельно выложен EXE файл для запуска, без необходимости скачивать весь репозиторий.
 
 ИЛИ
 
-  Release\Lab0_Task1_Programming.exe
+В visual studio -  Lab0_Task1_Programming.slnx
+В клонированном репозитории - Release\Lab0_Task1_Programming.exe
 
-## Что видно в Designer:
-1. Form1.cs -> View Designer:
-   - верхнее меню Лаб. 0 ... Лаб. 8;
-   - вложенное меню заданий;
-   - Label с названием задания;
-   - интерфейс задания №1, пункт 3 в центральной области.
-
-2. Controls/Lab0Task1Point3Control.cs -> View Designer:
-   - поля плотности, радиуса, массы;
-   - кнопка Рассчитать;
-   - Label результата и формула.
-
-3. Controls/Lab0Task2Point3Control.cs -> View Designer:
-   - кнопка Выполнить задание;
-   - подпись people.csv;
-   - поле результатов.
-
-Код логики находится в .cs, а размещение элементов — в .Designer.cs.
-Это стандартная структура WinForms и позволяет редактировать интерфейс мышкой в Visual Studio.
+## Ключевые файлы
+1. Form1.cs
+2. Controls/Lab0Task1Point3Control.cs
+3. Controls/Lab0Task2Point3Control.cs
