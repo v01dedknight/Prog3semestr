@@ -3,6 +3,10 @@
 ## Открывать:
   Lab0_Task1_Programming.slnx
 
+ИЛИ
+
+  Release\Lab0_Task1_Programming.exe
+
 ## Что видно в Designer:
 1. Form1.cs -> View Designer:
    - верхнее меню Лаб. 0 ... Лаб. 8;
