@@ -357,13 +357,14 @@ namespace Lab0_Task1_Programming.Controls
             {
                 double[] data = (double[])source.Clone();
                 var stopwatch = Stopwatch.StartNew();
-                bool completed = SortWithoutAnimation(algorithm, data, ascending);
+                SortExecutionResult execution = SortWithoutAnimation(algorithm, data, ascending);
                 stopwatch.Stop();
 
                 results.Add(new BenchmarkResult(
                     algorithm,
                     stopwatch.Elapsed.TotalMilliseconds,
-                    completed));
+                    execution.Iterations,
+                    execution.Completed));
             }
 
             return results;
@@ -378,6 +379,7 @@ namespace Lab0_Task1_Programming.Controls
                 resultsDataGridView.Rows.Add(
                     GetAlgorithmName(result.Algorithm),
                     result.ElapsedMilliseconds.ToString("F4", CultureInfo.CurrentCulture),
+                    result.Iterations.ToString("N0", CultureInfo.CurrentCulture),
                     result.Completed ? "Выполнено" : "Достигнут лимит");
             }
 
@@ -455,29 +457,39 @@ namespace Lab0_Task1_Programming.Controls
             CancellationToken cancellationToken)
         {
             double[] data = (double[])source.Clone();
-            card.StatusLabel.Text = "Сортировка...";
+            card.StatusLabel.Text = "Итерации: 0";
 
-            bool completed = algorithm switch
+            void ReportIterations(long count)
             {
-                SortAlgorithmKind.Bubble => await AnimateBubbleSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken),
-                SortAlgorithmKind.Insertion => await AnimateInsertionSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken),
-                SortAlgorithmKind.Shaker => await AnimateShakerSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken),
-                SortAlgorithmKind.Quick => await AnimateQuickSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken),
-                SortAlgorithmKind.Bogo => await AnimateBogoSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken),
-                _ => false
+                card.StatusLabel.Text = $"Итерации: {count:N0}";
+            }
+
+            AnimationResult animation = algorithm switch
+            {
+                SortAlgorithmKind.Bubble => await AnimateBubbleSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken, ReportIterations),
+                SortAlgorithmKind.Insertion => await AnimateInsertionSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken, ReportIterations),
+                SortAlgorithmKind.Shaker => await AnimateShakerSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken, ReportIterations),
+                SortAlgorithmKind.Quick => await AnimateQuickSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken, ReportIterations),
+                SortAlgorithmKind.Bogo => await AnimateBogoSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken, ReportIterations),
+                _ => new AnimationResult(false, 0)
             };
 
             card.Panel.SetState(data);
-            card.StatusLabel.Text = completed ? "Готово" : "Лимит BOGO";
+            card.StatusLabel.Text = animation.Completed
+                ? $"Готово, итераций: {animation.Iterations:N0}"
+                : $"Лимит BOGO, итераций: {animation.Iterations:N0}";
         }
 
-        private static async Task<bool> AnimateBubbleSortAsync(
+        private static async Task<AnimationResult> AnimateBubbleSortAsync(
             double[] data,
             bool ascending,
             SortVisualizationPanel panel,
             int delay,
-            CancellationToken token)
+            CancellationToken token,
+            Action<long> reportIterations)
         {
+            long iterations = 0;
+
             for (int i = 0; i < data.Length - 1; i++)
             {
                 bool swapped = false;
@@ -485,6 +497,8 @@ namespace Lab0_Task1_Programming.Controls
                 for (int j = 0; j < data.Length - i - 1; j++)
                 {
                     token.ThrowIfCancellationRequested();
+                    iterations++;
+                    reportIterations(iterations);
                     panel.SetState(data, j, j + 1);
                     await DelayStepAsync(delay, token);
 
@@ -501,16 +515,19 @@ namespace Lab0_Task1_Programming.Controls
                 }
             }
 
-            return true;
+            return new AnimationResult(true, iterations);
         }
 
-        private static async Task<bool> AnimateInsertionSortAsync(
+        private static async Task<AnimationResult> AnimateInsertionSortAsync(
             double[] data,
             bool ascending,
             SortVisualizationPanel panel,
             int delay,
-            CancellationToken token)
+            CancellationToken token,
+            Action<long> reportIterations)
         {
+            long iterations = 0;
+
             for (int i = 1; i < data.Length; i++)
             {
                 double key = data[i];
@@ -519,6 +536,8 @@ namespace Lab0_Task1_Programming.Controls
                 while (j >= 0 && Compare(data[j], key, ascending) > 0)
                 {
                     token.ThrowIfCancellationRequested();
+                    iterations++;
+                    reportIterations(iterations);
                     panel.SetState(data, j, j + 1);
                     await DelayStepAsync(delay, token);
 
@@ -527,20 +546,24 @@ namespace Lab0_Task1_Programming.Controls
                 }
 
                 data[j + 1] = key;
+                iterations++;
+                reportIterations(iterations);
                 panel.SetState(data, Math.Max(0, j + 1), i);
                 await DelayStepAsync(delay, token);
             }
 
-            return true;
+            return new AnimationResult(true, iterations);
         }
 
-        private static async Task<bool> AnimateShakerSortAsync(
+        private static async Task<AnimationResult> AnimateShakerSortAsync(
             double[] data,
             bool ascending,
             SortVisualizationPanel panel,
             int delay,
-            CancellationToken token)
+            CancellationToken token,
+            Action<long> reportIterations)
         {
+            long iterations = 0;
             int left = 0;
             int right = data.Length - 1;
             bool swapped = true;
@@ -552,6 +575,8 @@ namespace Lab0_Task1_Programming.Controls
                 for (int i = left; i < right; i++)
                 {
                     token.ThrowIfCancellationRequested();
+                    iterations++;
+                    reportIterations(iterations);
                     panel.SetState(data, i, i + 1);
                     await DelayStepAsync(delay, token);
 
@@ -572,6 +597,8 @@ namespace Lab0_Task1_Programming.Controls
                 for (int i = right; i > left; i--)
                 {
                     token.ThrowIfCancellationRequested();
+                    iterations++;
+                    reportIterations(iterations);
                     panel.SetState(data, i - 1, i);
                     await DelayStepAsync(delay, token);
 
@@ -585,25 +612,37 @@ namespace Lab0_Task1_Programming.Controls
                 left++;
             }
 
-            return true;
+            return new AnimationResult(true, iterations);
         }
 
-        private static async Task<bool> AnimateQuickSortAsync(
+        private static async Task<AnimationResult> AnimateQuickSortAsync(
             double[] data,
             bool ascending,
             SortVisualizationPanel panel,
             int delay,
-            CancellationToken token)
+            CancellationToken token,
+            Action<long> reportIterations)
         {
+            long iterations = 0;
+
+            async Task ReportStepAsync(int firstIndex, int secondIndex)
+            {
+                token.ThrowIfCancellationRequested();
+                iterations++;
+                reportIterations(iterations);
+                panel.SetState(data, firstIndex, secondIndex);
+                await DelayStepAsync(delay, token);
+            }
+
             await QuickSortAnimatedRangeAsync(
                 data,
                 0,
                 data.Length - 1,
                 ascending,
-                panel,
-                delay,
+                ReportStepAsync,
                 token);
-            return true;
+
+            return new AnimationResult(true, iterations);
         }
 
         private static async Task QuickSortAnimatedRangeAsync(
@@ -611,8 +650,7 @@ namespace Lab0_Task1_Programming.Controls
             int left,
             int right,
             bool ascending,
-            SortVisualizationPanel panel,
-            int delay,
+            Func<int, int, Task> reportStepAsync,
             CancellationToken token)
         {
             if (left >= right)
@@ -637,10 +675,7 @@ namespace Lab0_Task1_Programming.Controls
 
                 if (i <= j)
                 {
-                    token.ThrowIfCancellationRequested();
-                    panel.SetState(data, i, j);
-                    await DelayStepAsync(delay, token);
-
+                    await reportStepAsync(i, j);
                     (data[i], data[j]) = (data[j], data[i]);
                     i++;
                     j--;
@@ -649,20 +684,21 @@ namespace Lab0_Task1_Programming.Controls
 
             if (left < j)
             {
-                await QuickSortAnimatedRangeAsync(data, left, j, ascending, panel, delay, token);
+                await QuickSortAnimatedRangeAsync(data, left, j, ascending, reportStepAsync, token);
             }
             if (i < right)
             {
-                await QuickSortAnimatedRangeAsync(data, i, right, ascending, panel, delay, token);
+                await QuickSortAnimatedRangeAsync(data, i, right, ascending, reportStepAsync, token);
             }
         }
 
-        private static async Task<bool> AnimateBogoSortAsync(
+        private static async Task<AnimationResult> AnimateBogoSortAsync(
             double[] data,
             bool ascending,
             SortVisualizationPanel panel,
             int delay,
-            CancellationToken token)
+            CancellationToken token,
+            Action<long> reportIterations)
         {
             var random = new Random(2026);
             int shuffles = 0;
@@ -676,12 +712,14 @@ namespace Lab0_Task1_Programming.Controls
 
                 if (shuffles % renderEvery == 0)
                 {
+                    reportIterations(shuffles);
                     panel.SetState(data);
                     await DelayStepAsync(delay, token);
                 }
             }
 
-            return IsSorted(data, ascending);
+            reportIterations(shuffles);
+            return new AnimationResult(IsSorted(data, ascending), shuffles);
         }
 
         private static Task DelayStepAsync(int delayMilliseconds, CancellationToken token)
@@ -691,39 +729,32 @@ namespace Lab0_Task1_Programming.Controls
                 : Task.Delay(delayMilliseconds, token);
         }
 
-        private static bool SortWithoutAnimation(
+        private static SortExecutionResult SortWithoutAnimation(
             SortAlgorithmKind algorithm,
             double[] data,
             bool ascending)
         {
-            switch (algorithm)
+            return algorithm switch
             {
-                case SortAlgorithmKind.Bubble:
-                    BubbleSort(data, ascending);
-                    return true;
-                case SortAlgorithmKind.Insertion:
-                    InsertionSort(data, ascending);
-                    return true;
-                case SortAlgorithmKind.Shaker:
-                    ShakerSort(data, ascending);
-                    return true;
-                case SortAlgorithmKind.Quick:
-                    QuickSort(data, 0, data.Length - 1, ascending);
-                    return true;
-                case SortAlgorithmKind.Bogo:
-                    return BogoSort(data, ascending);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(algorithm));
-            }
+                SortAlgorithmKind.Bubble => new SortExecutionResult(true, BubbleSort(data, ascending)),
+                SortAlgorithmKind.Insertion => new SortExecutionResult(true, InsertionSort(data, ascending)),
+                SortAlgorithmKind.Shaker => new SortExecutionResult(true, ShakerSort(data, ascending)),
+                SortAlgorithmKind.Quick => RunQuickSort(data, ascending),
+                SortAlgorithmKind.Bogo => BogoSort(data, ascending),
+                _ => throw new ArgumentOutOfRangeException(nameof(algorithm))
+            };
         }
 
-        private static void BubbleSort(double[] data, bool ascending)
+        private static long BubbleSort(double[] data, bool ascending)
         {
+            long iterations = 0;
+
             for (int i = 0; i < data.Length - 1; i++)
             {
                 bool swapped = false;
                 for (int j = 0; j < data.Length - i - 1; j++)
                 {
+                    iterations++;
                     if (ShouldSwap(data[j], data[j + 1], ascending))
                     {
                         (data[j], data[j + 1]) = (data[j + 1], data[j]);
@@ -736,10 +767,14 @@ namespace Lab0_Task1_Programming.Controls
                     break;
                 }
             }
+
+            return iterations;
         }
 
-        private static void InsertionSort(double[] data, bool ascending)
+        private static long InsertionSort(double[] data, bool ascending)
         {
+            long iterations = 0;
+
             for (int i = 1; i < data.Length; i++)
             {
                 double key = data[i];
@@ -747,16 +782,21 @@ namespace Lab0_Task1_Programming.Controls
 
                 while (j >= 0 && Compare(data[j], key, ascending) > 0)
                 {
+                    iterations++;
                     data[j + 1] = data[j];
                     j--;
                 }
 
                 data[j + 1] = key;
+                iterations++;
             }
+
+            return iterations;
         }
 
-        private static void ShakerSort(double[] data, bool ascending)
+        private static long ShakerSort(double[] data, bool ascending)
         {
+            long iterations = 0;
             int left = 0;
             int right = data.Length - 1;
             bool swapped = true;
@@ -766,6 +806,7 @@ namespace Lab0_Task1_Programming.Controls
                 swapped = false;
                 for (int i = left; i < right; i++)
                 {
+                    iterations++;
                     if (ShouldSwap(data[i], data[i + 1], ascending))
                     {
                         (data[i], data[i + 1]) = (data[i + 1], data[i]);
@@ -782,6 +823,7 @@ namespace Lab0_Task1_Programming.Controls
                 swapped = false;
                 for (int i = right; i > left; i--)
                 {
+                    iterations++;
                     if (ShouldSwap(data[i - 1], data[i], ascending))
                     {
                         (data[i - 1], data[i]) = (data[i], data[i - 1]);
@@ -791,27 +833,47 @@ namespace Lab0_Task1_Programming.Controls
 
                 left++;
             }
+
+            return iterations;
         }
 
-        private static void QuickSort(double[] data, int left, int right, bool ascending)
+        private static SortExecutionResult RunQuickSort(double[] data, bool ascending)
         {
+            long iterations = 0;
+            QuickSort(data, 0, data.Length - 1, ascending, ref iterations);
+            return new SortExecutionResult(true, iterations);
+        }
+
+        private static void QuickSort(
+            double[] data,
+            int left,
+            int right,
+            bool ascending,
+            ref long iterations)
+        {
+            if (left >= right)
+            {
+                return;
+            }
+
             int i = left;
             int j = right;
             double pivot = data[left + (right - left) / 2];
 
             while (i <= j)
             {
-                while (Compare(data[i], pivot, ascending) < 0)
+                while (i <= right && Compare(data[i], pivot, ascending) < 0)
                 {
                     i++;
                 }
-                while (Compare(data[j], pivot, ascending) > 0)
+                while (j >= left && Compare(data[j], pivot, ascending) > 0)
                 {
                     j--;
                 }
 
                 if (i <= j)
                 {
+                    iterations++;
                     (data[i], data[j]) = (data[j], data[i]);
                     i++;
                     j--;
@@ -820,15 +882,15 @@ namespace Lab0_Task1_Programming.Controls
 
             if (left < j)
             {
-                QuickSort(data, left, j, ascending);
+                QuickSort(data, left, j, ascending, ref iterations);
             }
             if (i < right)
             {
-                QuickSort(data, i, right, ascending);
+                QuickSort(data, i, right, ascending, ref iterations);
             }
         }
 
-        private static bool BogoSort(double[] data, bool ascending)
+        private static SortExecutionResult BogoSort(double[] data, bool ascending)
         {
             var random = new Random(2026);
             int shuffles = 0;
@@ -839,7 +901,7 @@ namespace Lab0_Task1_Programming.Controls
                 shuffles++;
             }
 
-            return IsSorted(data, ascending);
+            return new SortExecutionResult(IsSorted(data, ascending), shuffles);
         }
 
         private static void Shuffle(double[] data, Random random)
@@ -1164,7 +1226,16 @@ namespace Lab0_Task1_Programming.Controls
         private sealed record BenchmarkResult(
             SortAlgorithmKind Algorithm,
             double ElapsedMilliseconds,
+            long Iterations,
             bool Completed);
+
+        private sealed record SortExecutionResult(
+            bool Completed,
+            long Iterations);
+
+        private sealed record AnimationResult(
+            bool Completed,
+            long Iterations);
 
         private sealed record VisualizationCard(
             SortVisualizationPanel Panel,

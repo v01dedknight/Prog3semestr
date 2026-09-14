@@ -64,6 +64,7 @@ namespace Lab0_Task1_Programming.Controls
             resultsDataGridView = new DataGridView();
             algorithmColumn = new DataGridViewTextBoxColumn();
             timeColumn = new DataGridViewTextBoxColumn();
+            iterationColumn = new DataGridViewTextBoxColumn();
             statusColumn = new DataGridViewTextBoxColumn();
             visualizationGroupBox = new GroupBox();
             visualizationFlowLayoutPanel = new FlowLayoutPanel();
@@ -553,7 +554,7 @@ namespace Lab0_Task1_Programming.Controls
             resultsGroupBox.Size = new Size(446, 136);
             resultsGroupBox.TabIndex = 1;
             resultsGroupBox.TabStop = false;
-            resultsGroupBox.Text = "Время сортировки";
+            resultsGroupBox.Text = "Результаты сортировки";
             // 
             // resultsLayout
             // 
@@ -587,7 +588,7 @@ namespace Lab0_Task1_Programming.Controls
             resultsDataGridView.AllowUserToDeleteRows = false;
             resultsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             resultsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            resultsDataGridView.Columns.AddRange(new DataGridViewColumn[] { algorithmColumn, timeColumn, statusColumn });
+            resultsDataGridView.Columns.AddRange(new DataGridViewColumn[] { algorithmColumn, timeColumn, iterationColumn, statusColumn });
             resultsDataGridView.Dock = DockStyle.Fill;
             resultsDataGridView.Location = new Point(3, 28);
             resultsDataGridView.Name = "resultsDataGridView";
@@ -598,21 +599,28 @@ namespace Lab0_Task1_Programming.Controls
             // 
             // algorithmColumn
             // 
-            algorithmColumn.FillWeight = 42F;
+            algorithmColumn.FillWeight = 34F;
             algorithmColumn.HeaderText = "Алгоритм";
             algorithmColumn.Name = "algorithmColumn";
             algorithmColumn.ReadOnly = true;
             // 
             // timeColumn
             // 
-            timeColumn.FillWeight = 28F;
+            timeColumn.FillWeight = 22F;
             timeColumn.HeaderText = "Время, мс";
             timeColumn.Name = "timeColumn";
             timeColumn.ReadOnly = true;
             // 
+            // iterationColumn
+            // 
+            iterationColumn.FillWeight = 22F;
+            iterationColumn.HeaderText = "Итерации";
+            iterationColumn.Name = "iterationColumn";
+            iterationColumn.ReadOnly = true;
+            // 
             // statusColumn
             // 
-            statusColumn.FillWeight = 30F;
+            statusColumn.FillWeight = 22F;
             statusColumn.HeaderText = "Статус";
             statusColumn.Name = "statusColumn";
             statusColumn.ReadOnly = true;
@@ -724,6 +732,7 @@ namespace Lab0_Task1_Programming.Controls
         private DataGridView resultsDataGridView;
         private DataGridViewTextBoxColumn algorithmColumn;
         private DataGridViewTextBoxColumn timeColumn;
+        private DataGridViewTextBoxColumn iterationColumn;
         private DataGridViewTextBoxColumn statusColumn;
         private GroupBox visualizationGroupBox;
         private FlowLayoutPanel visualizationFlowLayoutPanel;
