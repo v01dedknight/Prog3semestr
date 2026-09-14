@@ -40,6 +40,7 @@ namespace Lab0_Task1_Programming
             emptyLabLabel = new Label();
             lab0Task2Point3Control = new Lab0_Task1_Programming.Controls.Lab0Task2Point3Control();
             lab0Task1Point3Control = new Lab0_Task1_Programming.Controls.Lab0Task1Point3Control();
+            lab4SortingControl = new Lab0_Task1_Programming.Controls.Lab4SortingControl();
             rootLayout.SuspendLayout();
             labMenuPanel.SuspendLayout();
             taskMenuPanel.SuspendLayout();
@@ -298,6 +299,7 @@ namespace Lab0_Task1_Programming
             // contentPanel
             // 
             contentPanel.Controls.Add(emptyLabLabel);
+            contentPanel.Controls.Add(lab4SortingControl);
             contentPanel.Controls.Add(lab0Task2Point3Control);
             contentPanel.Controls.Add(lab0Task1Point3Control);
             contentPanel.Dock = DockStyle.Fill;
@@ -318,6 +320,16 @@ namespace Lab0_Task1_Programming
             emptyLabLabel.TabIndex = 2;
             emptyLabLabel.Text = "Здесь позже появятся задания этой лабораторной.";
             emptyLabLabel.Visible = false;
+            // 
+            // lab4SortingControl
+            // 
+            lab4SortingControl.Dock = DockStyle.Fill;
+            lab4SortingControl.Location = new Point(18, 18);
+            lab4SortingControl.Name = "lab4SortingControl";
+            lab4SortingControl.Size = new Size(1144, 498);
+            lab4SortingControl.TabIndex = 3;
+            lab4SortingControl.Visible = false;
+            // 
             // 
             // lab0Task2Point3Control
             // 
@@ -381,6 +393,7 @@ namespace Lab0_Task1_Programming
         private Panel contentPanel;
         private Controls.Lab0Task1Point3Control lab0Task1Point3Control;
         private Controls.Lab0Task2Point3Control lab0Task2Point3Control;
+        private Controls.Lab4SortingControl lab4SortingControl;
         private Label emptyLabLabel;
     }
 }
