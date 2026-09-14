@@ -46,7 +46,12 @@ namespace Lab0_Task1_Programming.Controls
 
             for (int i = 0; i < count; i++)
             {
-                valuesDataGridView.Rows.Add(Random.Shared.Next(min, max + 1));
+                int generatedValue = Random.Shared.Next(min, max + 1);
+
+                // Важно передавать значение как содержимое ячейки.
+                // Rows.Add(int) — это другая перегрузка: она воспринимает int
+                // как количество копий строк и падает на нуле/отрицательных числах.
+                valuesDataGridView.Rows.Add(new object[] { generatedValue });
             }
 
             ClearResults();
