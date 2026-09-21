@@ -16,9 +16,32 @@ namespace Lab0_Task1_Programming.Controls
 
         public void SetState(IReadOnlyList<double> values, int firstIndex = -1, int secondIndex = -1)
         {
-            _values = values.ToArray();
-            _firstIndex = firstIndex;
-            _secondIndex = secondIndex;
+            // Ограничений на размер входного массива нет. Для самой отрисовки
+            // большие наборы прореживаются до количества точек, которое имеет
+            // смысл показывать на панели. На сортировку это не влияет.
+            int maxPoints = Math.Max(50, ClientSize.Width * 2);
+
+            if (values.Count <= maxPoints)
+            {
+                _values = values.ToArray();
+                _firstIndex = firstIndex;
+                _secondIndex = secondIndex;
+            }
+            else
+            {
+                _values = new double[maxPoints];
+                double scale = (double)values.Count / maxPoints;
+
+                for (int i = 0; i < maxPoints; i++)
+                {
+                    int sourceIndex = Math.Min(values.Count - 1, (int)(i * scale));
+                    _values[i] = values[sourceIndex];
+                }
+
+                _firstIndex = -1;
+                _secondIndex = -1;
+            }
+
             Invalidate();
         }
 

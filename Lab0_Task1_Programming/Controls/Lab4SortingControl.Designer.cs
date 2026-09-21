@@ -58,6 +58,8 @@ namespace Lab0_Task1_Programming.Controls
             shakerCheckBox = new CheckBox();
             quickCheckBox = new CheckBox();
             bogoCheckBox = new CheckBox();
+            bogoIterationsLabel = new Label();
+            bogoIterationsNumericUpDown = new NumericUpDown();
             resultsGroupBox = new GroupBox();
             resultsLayout = new TableLayoutPanel();
             fastestLabel = new Label();
@@ -84,6 +86,7 @@ namespace Lab0_Task1_Programming.Controls
             algorithmResultLayout.SuspendLayout();
             algorithmsGroupBox.SuspendLayout();
             algorithmsFlowLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)bogoIterationsNumericUpDown).BeginInit();
             resultsGroupBox.SuspendLayout();
             resultsLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)resultsDataGridView).BeginInit();
@@ -301,12 +304,13 @@ namespace Lab0_Task1_Programming.Controls
             // 
             countNumericUpDown.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             countNumericUpDown.Location = new Point(128, 2);
-            countNumericUpDown.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
+            countNumericUpDown.Maximum = new decimal(new int[] { 2147483647, 0, 0, 0 });
             countNumericUpDown.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+            countNumericUpDown.ThousandsSeparator = true;
             countNumericUpDown.Name = "countNumericUpDown";
             countNumericUpDown.Size = new Size(187, 23);
             countNumericUpDown.TabIndex = 1;
-            countNumericUpDown.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            countNumericUpDown.Value = new decimal(new int[] { 100, 0, 0, 0 });
             // 
             // minLabel
             // 
@@ -321,6 +325,8 @@ namespace Lab0_Task1_Programming.Controls
             // minNumericUpDown
             // 
             minNumericUpDown.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            minNumericUpDown.DecimalPlaces = 2;
+            minNumericUpDown.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
             minNumericUpDown.Location = new Point(128, 29);
             minNumericUpDown.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             minNumericUpDown.Minimum = new decimal(new int[] { 1000000, 0, 0, int.MinValue });
@@ -342,6 +348,8 @@ namespace Lab0_Task1_Programming.Controls
             // maxNumericUpDown
             // 
             maxNumericUpDown.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            maxNumericUpDown.DecimalPlaces = 2;
+            maxNumericUpDown.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
             maxNumericUpDown.Location = new Point(128, 56);
             maxNumericUpDown.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             maxNumericUpDown.Minimum = new decimal(new int[] { 1000000, 0, 0, int.MinValue });
@@ -457,7 +465,7 @@ namespace Lab0_Task1_Programming.Controls
             algorithmResultLayout.Location = new Point(333, 3);
             algorithmResultLayout.Name = "algorithmResultLayout";
             algorithmResultLayout.RowCount = 2;
-            algorithmResultLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 75F));
+            algorithmResultLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 105F));
             algorithmResultLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             algorithmResultLayout.Size = new Size(452, 217);
             algorithmResultLayout.TabIndex = 1;
@@ -468,7 +476,7 @@ namespace Lab0_Task1_Programming.Controls
             algorithmsGroupBox.Dock = DockStyle.Fill;
             algorithmsGroupBox.Location = new Point(3, 3);
             algorithmsGroupBox.Name = "algorithmsGroupBox";
-            algorithmsGroupBox.Size = new Size(446, 69);
+            algorithmsGroupBox.Size = new Size(446, 99);
             algorithmsGroupBox.TabIndex = 0;
             algorithmsGroupBox.TabStop = false;
             algorithmsGroupBox.Text = "Алгоритмы (можно выбрать несколько)";
@@ -480,11 +488,13 @@ namespace Lab0_Task1_Programming.Controls
             algorithmsFlowLayoutPanel.Controls.Add(shakerCheckBox);
             algorithmsFlowLayoutPanel.Controls.Add(quickCheckBox);
             algorithmsFlowLayoutPanel.Controls.Add(bogoCheckBox);
+            algorithmsFlowLayoutPanel.Controls.Add(bogoIterationsLabel);
+            algorithmsFlowLayoutPanel.Controls.Add(bogoIterationsNumericUpDown);
             algorithmsFlowLayoutPanel.Dock = DockStyle.Fill;
             algorithmsFlowLayoutPanel.Location = new Point(3, 19);
             algorithmsFlowLayoutPanel.Name = "algorithmsFlowLayoutPanel";
             algorithmsFlowLayoutPanel.Padding = new Padding(3, 4, 3, 3);
-            algorithmsFlowLayoutPanel.Size = new Size(440, 47);
+            algorithmsFlowLayoutPanel.Size = new Size(440, 77);
             algorithmsFlowLayoutPanel.TabIndex = 0;
             // 
             // bubbleCheckBox
@@ -545,13 +555,32 @@ namespace Lab0_Task1_Programming.Controls
             bogoCheckBox.Text = "BOGO";
             bogoCheckBox.UseVisualStyleBackColor = true;
             // 
+            // bogoIterationsLabel
+            // 
+            bogoIterationsLabel.AutoSize = true;
+            bogoIterationsLabel.Margin = new Padding(6, 7, 3, 3);
+            bogoIterationsLabel.Name = "bogoIterationsLabel";
+            bogoIterationsLabel.Size = new Size(112, 15);
+            bogoIterationsLabel.TabIndex = 5;
+            bogoIterationsLabel.Text = "Итераций BOGO:";
+            // 
+            // bogoIterationsNumericUpDown
+            // 
+            bogoIterationsNumericUpDown.Maximum = new decimal(new int[] { 2147483647, 0, 0, 0 });
+            bogoIterationsNumericUpDown.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            bogoIterationsNumericUpDown.Name = "bogoIterationsNumericUpDown";
+            bogoIterationsNumericUpDown.Size = new Size(110, 23);
+            bogoIterationsNumericUpDown.TabIndex = 6;
+            bogoIterationsNumericUpDown.ThousandsSeparator = true;
+            bogoIterationsNumericUpDown.Value = new decimal(new int[] { 100000, 0, 0, 0 });
+            // 
             // resultsGroupBox
             // 
             resultsGroupBox.Controls.Add(resultsLayout);
             resultsGroupBox.Dock = DockStyle.Fill;
-            resultsGroupBox.Location = new Point(3, 78);
+            resultsGroupBox.Location = new Point(3, 108);
             resultsGroupBox.Name = "resultsGroupBox";
-            resultsGroupBox.Size = new Size(446, 136);
+            resultsGroupBox.Size = new Size(446, 106);
             resultsGroupBox.TabIndex = 1;
             resultsGroupBox.TabStop = false;
             resultsGroupBox.Text = "Результаты сортировки";
@@ -568,7 +597,7 @@ namespace Lab0_Task1_Programming.Controls
             resultsLayout.RowCount = 2;
             resultsLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
             resultsLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            resultsLayout.Size = new Size(440, 114);
+            resultsLayout.Size = new Size(440, 84);
             resultsLayout.TabIndex = 0;
             // 
             // fastestLabel
@@ -594,7 +623,7 @@ namespace Lab0_Task1_Programming.Controls
             resultsDataGridView.Name = "resultsDataGridView";
             resultsDataGridView.ReadOnly = true;
             resultsDataGridView.RowHeadersVisible = false;
-            resultsDataGridView.Size = new Size(434, 83);
+            resultsDataGridView.Size = new Size(434, 53);
             resultsDataGridView.TabIndex = 1;
             // 
             // algorithmColumn
@@ -676,6 +705,7 @@ namespace Lab0_Task1_Programming.Controls
             algorithmsGroupBox.ResumeLayout(false);
             algorithmsFlowLayoutPanel.ResumeLayout(false);
             algorithmsFlowLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)bogoIterationsNumericUpDown).EndInit();
             resultsGroupBox.ResumeLayout(false);
             resultsLayout.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)resultsDataGridView).EndInit();
@@ -726,6 +756,8 @@ namespace Lab0_Task1_Programming.Controls
         private CheckBox shakerCheckBox;
         private CheckBox quickCheckBox;
         private CheckBox bogoCheckBox;
+        private Label bogoIterationsLabel;
+        private NumericUpDown bogoIterationsNumericUpDown;
         private GroupBox resultsGroupBox;
         private TableLayoutPanel resultsLayout;
         private Label fastestLabel;

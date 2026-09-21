@@ -9,9 +9,6 @@ namespace Lab0_Task1_Programming.Controls
 {
     public partial class Lab4SortingControl : UserControl
     {
-        private const int MaxVisualValues = 200;
-        private const int MaxBogoValues = 8;
-        private const int MaxBogoShuffles = 2_000_000;
 
         private CancellationTokenSource? _sortingCts;
         private bool _isRunning;
@@ -28,9 +25,9 @@ namespace Lab0_Task1_Programming.Controls
                 return;
             }
 
-            int count = (int)countNumericUpDown.Value;
-            int min = (int)minNumericUpDown.Value;
-            int max = (int)maxNumericUpDown.Value;
+            int count = decimal.ToInt32(countNumericUpDown.Value);
+            double min = decimal.ToDouble(minNumericUpDown.Value);
+            double max = decimal.ToDouble(maxNumericUpDown.Value);
 
             if (min > max)
             {
@@ -46,12 +43,16 @@ namespace Lab0_Task1_Programming.Controls
 
             for (int i = 0; i < count; i++)
             {
-                int generatedValue = Random.Shared.Next(min, max + 1);
+                double generatedValue = min == max
+                    ? min
+                    : min + Random.Shared.NextDouble() * (max - min);
+                generatedValue = Math.Round(generatedValue, 2);
 
-                // Важно передавать значение как содержимое ячейки.
-                // Rows.Add(int) — это другая перегрузка: она воспринимает int
-                // как количество копий строк и падает на нуле/отрицательных числах.
-                valuesDataGridView.Rows.Add(new object[] { generatedValue });
+                // Значение передается именно как содержимое ячейки.
+                valuesDataGridView.Rows.Add(new object[]
+                {
+                    generatedValue.ToString("0.##", CultureInfo.CurrentCulture)
+                });
             }
 
             ClearResults();
@@ -168,18 +169,9 @@ namespace Lab0_Task1_Programming.Controls
                 return;
             }
 
-            if (algorithms.Contains(SortAlgorithmKind.Bogo) && sourceValues.Length > MaxBogoValues)
-            {
-                MessageBox.Show(
-                    $"Для BOGO допускается не более {MaxBogoValues} значений. " +
-                    "Уменьшите набор данных или отключите BOGO.",
-                    "Ограничение BOGO",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
 
             bool ascending = ascendingRadioButton.Checked;
+            int bogoIterationLimit = decimal.ToInt32(bogoIterationsNumericUpDown.Value);
             _sortingCts = new CancellationTokenSource();
             SetRunningState(true);
             ClearResults();
@@ -189,7 +181,8 @@ namespace Lab0_Task1_Programming.Controls
                 List<BenchmarkResult> benchmarkResults = BenchmarkSelectedAlgorithms(
                     algorithms,
                     sourceValues,
-                    ascending);
+                    ascending,
+                    bogoIterationLimit);
 
                 ShowBenchmarkResults(benchmarkResults);
 
@@ -204,6 +197,7 @@ namespace Lab0_Task1_Programming.Controls
                         ascending,
                         cards[algorithm],
                         delay,
+                        bogoIterationLimit,
                         _sortingCts.Token));
 
                 await Task.WhenAll(animationTasks);
@@ -303,16 +297,6 @@ namespace Lab0_Task1_Programming.Controls
                 return false;
             }
 
-            if (result.Count > MaxVisualValues)
-            {
-                MessageBox.Show(
-                    $"Для визуализации допускается не более {MaxVisualValues} значений.",
-                    "Слишком много данных",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                values = Array.Empty<double>();
-                return false;
-            }
 
             values = result.ToArray();
             return true;
@@ -349,7 +333,8 @@ namespace Lab0_Task1_Programming.Controls
         private List<BenchmarkResult> BenchmarkSelectedAlgorithms(
             IEnumerable<SortAlgorithmKind> algorithms,
             double[] source,
-            bool ascending)
+            bool ascending,
+            int bogoIterationLimit)
         {
             var results = new List<BenchmarkResult>();
 
@@ -357,7 +342,8 @@ namespace Lab0_Task1_Programming.Controls
             {
                 double[] data = (double[])source.Clone();
                 var stopwatch = Stopwatch.StartNew();
-                SortExecutionResult execution = SortWithoutAnimation(algorithm, data, ascending);
+                SortExecutionResult execution = SortWithoutAnimation(
+                    algorithm, data, ascending, bogoIterationLimit);
                 stopwatch.Stop();
 
                 results.Add(new BenchmarkResult(
@@ -454,6 +440,7 @@ namespace Lab0_Task1_Programming.Controls
             bool ascending,
             VisualizationCard card,
             int delayMilliseconds,
+            int bogoIterationLimit,
             CancellationToken cancellationToken)
         {
             double[] data = (double[])source.Clone();
@@ -470,7 +457,7 @@ namespace Lab0_Task1_Programming.Controls
                 SortAlgorithmKind.Insertion => await AnimateInsertionSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken, ReportIterations),
                 SortAlgorithmKind.Shaker => await AnimateShakerSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken, ReportIterations),
                 SortAlgorithmKind.Quick => await AnimateQuickSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken, ReportIterations),
-                SortAlgorithmKind.Bogo => await AnimateBogoSortAsync(data, ascending, card.Panel, delayMilliseconds, cancellationToken, ReportIterations),
+                SortAlgorithmKind.Bogo => await AnimateBogoSortAsync(data, ascending, card.Panel, delayMilliseconds, bogoIterationLimit, cancellationToken, ReportIterations),
                 _ => new AnimationResult(false, 0)
             };
 
@@ -497,17 +484,18 @@ namespace Lab0_Task1_Programming.Controls
                 for (int j = 0; j < data.Length - i - 1; j++)
                 {
                     token.ThrowIfCancellationRequested();
-                    iterations++;
-                    reportIterations(iterations);
-                    panel.SetState(data, j, j + 1);
-                    await DelayStepAsync(delay, token);
-
                     if (ShouldSwap(data[j], data[j + 1], ascending))
                     {
                         (data[j], data[j + 1]) = (data[j + 1], data[j]);
                         swapped = true;
                     }
                 }
+
+                // Одна итерация = один полный проход пузырька по рабочей части массива.
+                iterations++;
+                reportIterations(iterations);
+                panel.SetState(data);
+                await DelayStepAsync(delay, token);
 
                 if (!swapped)
                 {
@@ -536,19 +524,17 @@ namespace Lab0_Task1_Programming.Controls
                 while (j >= 0 && Compare(data[j], key, ascending) > 0)
                 {
                     token.ThrowIfCancellationRequested();
-                    iterations++;
-                    reportIterations(iterations);
-                    panel.SetState(data, j, j + 1);
-                    await DelayStepAsync(delay, token);
-
                     data[j + 1] = data[j];
                     j--;
                 }
 
                 data[j + 1] = key;
+
+                // Одна итерация = завершенный проход вставки текущего элемента
+                // по всей его рабочей (уже отсортированной) части массива.
                 iterations++;
                 reportIterations(iterations);
-                panel.SetState(data, Math.Max(0, j + 1), i);
+                panel.SetState(data);
                 await DelayStepAsync(delay, token);
             }
 
@@ -566,50 +552,45 @@ namespace Lab0_Task1_Programming.Controls
             long iterations = 0;
             int left = 0;
             int right = data.Length - 1;
-            bool swapped = true;
 
-            while (swapped && left < right)
+            while (left < right)
             {
-                swapped = false;
+                bool swapped = false;
 
+                // Первая половина итерации: слева направо.
                 for (int i = left; i < right; i++)
                 {
                     token.ThrowIfCancellationRequested();
-                    iterations++;
-                    reportIterations(iterations);
-                    panel.SetState(data, i, i + 1);
-                    await DelayStepAsync(delay, token);
-
                     if (ShouldSwap(data[i], data[i + 1], ascending))
                     {
                         (data[i], data[i + 1]) = (data[i + 1], data[i]);
                         swapped = true;
                     }
                 }
-
                 right--;
-                if (!swapped)
-                {
-                    break;
-                }
 
-                swapped = false;
+                // Вторая половина той же итерации: справа налево.
                 for (int i = right; i > left; i--)
                 {
                     token.ThrowIfCancellationRequested();
-                    iterations++;
-                    reportIterations(iterations);
-                    panel.SetState(data, i - 1, i);
-                    await DelayStepAsync(delay, token);
-
                     if (ShouldSwap(data[i - 1], data[i], ascending))
                     {
                         (data[i - 1], data[i]) = (data[i], data[i - 1]);
                         swapped = true;
                     }
                 }
-
                 left++;
+
+                // Для шейкерной сортировки одна итерация — проход в обе стороны.
+                iterations++;
+                reportIterations(iterations);
+                panel.SetState(data);
+                await DelayStepAsync(delay, token);
+
+                if (!swapped)
+                {
+                    break;
+                }
             }
 
             return new AnimationResult(true, iterations);
@@ -625,12 +606,12 @@ namespace Lab0_Task1_Programming.Controls
         {
             long iterations = 0;
 
-            async Task ReportStepAsync(int firstIndex, int secondIndex)
+            async Task ReportPartitionPassAsync()
             {
                 token.ThrowIfCancellationRequested();
                 iterations++;
                 reportIterations(iterations);
-                panel.SetState(data, firstIndex, secondIndex);
+                panel.SetState(data);
                 await DelayStepAsync(delay, token);
             }
 
@@ -639,7 +620,7 @@ namespace Lab0_Task1_Programming.Controls
                 0,
                 data.Length - 1,
                 ascending,
-                ReportStepAsync,
+                ReportPartitionPassAsync,
                 token);
 
             return new AnimationResult(true, iterations);
@@ -650,7 +631,7 @@ namespace Lab0_Task1_Programming.Controls
             int left,
             int right,
             bool ascending,
-            Func<int, int, Task> reportStepAsync,
+            Func<Task> reportPartitionPassAsync,
             CancellationToken token)
         {
             if (left >= right)
@@ -664,6 +645,8 @@ namespace Lab0_Task1_Programming.Controls
 
             while (i <= j)
             {
+                token.ThrowIfCancellationRequested();
+
                 while (i <= right && Compare(data[i], pivot, ascending) < 0)
                 {
                     i++;
@@ -675,20 +658,25 @@ namespace Lab0_Task1_Programming.Controls
 
                 if (i <= j)
                 {
-                    await reportStepAsync(i, j);
                     (data[i], data[j]) = (data[j], data[i]);
                     i++;
                     j--;
                 }
             }
 
+            // Для Quick Sort итерацией считается один законченный проход
+            // разбиения текущего рабочего диапазона относительно pivot.
+            await reportPartitionPassAsync();
+
             if (left < j)
             {
-                await QuickSortAnimatedRangeAsync(data, left, j, ascending, reportStepAsync, token);
+                await QuickSortAnimatedRangeAsync(
+                    data, left, j, ascending, reportPartitionPassAsync, token);
             }
             if (i < right)
             {
-                await QuickSortAnimatedRangeAsync(data, i, right, ascending, reportStepAsync, token);
+                await QuickSortAnimatedRangeAsync(
+                    data, i, right, ascending, reportPartitionPassAsync, token);
             }
         }
 
@@ -697,29 +685,32 @@ namespace Lab0_Task1_Programming.Controls
             bool ascending,
             SortVisualizationPanel panel,
             int delay,
+            int maxIterations,
             CancellationToken token,
             Action<long> reportIterations)
         {
             var random = new Random(2026);
-            int shuffles = 0;
-            int renderEvery = Math.Max(1, data.Length * 5);
+            int iterations = 0;
+            int renderEvery = Math.Max(1, maxIterations / 100);
 
-            while (!IsSorted(data, ascending) && shuffles < MaxBogoShuffles)
+            while (!IsSorted(data, ascending) && iterations < maxIterations)
             {
                 token.ThrowIfCancellationRequested();
-                Shuffle(data, random);
-                shuffles++;
 
-                if (shuffles % renderEvery == 0)
+                // Одно полное случайное перемешивание всего массива = одна итерация BOGO.
+                Shuffle(data, random);
+                iterations++;
+
+                if (iterations % renderEvery == 0 || iterations == maxIterations || IsSorted(data, ascending))
                 {
-                    reportIterations(shuffles);
+                    reportIterations(iterations);
                     panel.SetState(data);
                     await DelayStepAsync(delay, token);
                 }
             }
 
-            reportIterations(shuffles);
-            return new AnimationResult(IsSorted(data, ascending), shuffles);
+            reportIterations(iterations);
+            return new AnimationResult(IsSorted(data, ascending), iterations);
         }
 
         private static Task DelayStepAsync(int delayMilliseconds, CancellationToken token)
@@ -732,7 +723,8 @@ namespace Lab0_Task1_Programming.Controls
         private static SortExecutionResult SortWithoutAnimation(
             SortAlgorithmKind algorithm,
             double[] data,
-            bool ascending)
+            bool ascending,
+            int bogoIterationLimit)
         {
             return algorithm switch
             {
@@ -740,7 +732,7 @@ namespace Lab0_Task1_Programming.Controls
                 SortAlgorithmKind.Insertion => new SortExecutionResult(true, InsertionSort(data, ascending)),
                 SortAlgorithmKind.Shaker => new SortExecutionResult(true, ShakerSort(data, ascending)),
                 SortAlgorithmKind.Quick => RunQuickSort(data, ascending),
-                SortAlgorithmKind.Bogo => BogoSort(data, ascending),
+                SortAlgorithmKind.Bogo => BogoSort(data, ascending, bogoIterationLimit),
                 _ => throw new ArgumentOutOfRangeException(nameof(algorithm))
             };
         }
@@ -752,9 +744,9 @@ namespace Lab0_Task1_Programming.Controls
             for (int i = 0; i < data.Length - 1; i++)
             {
                 bool swapped = false;
+
                 for (int j = 0; j < data.Length - i - 1; j++)
                 {
-                    iterations++;
                     if (ShouldSwap(data[j], data[j + 1], ascending))
                     {
                         (data[j], data[j + 1]) = (data[j + 1], data[j]);
@@ -762,6 +754,7 @@ namespace Lab0_Task1_Programming.Controls
                     }
                 }
 
+                iterations++;
                 if (!swapped)
                 {
                     break;
@@ -782,7 +775,6 @@ namespace Lab0_Task1_Programming.Controls
 
                 while (j >= 0 && Compare(data[j], key, ascending) > 0)
                 {
-                    iterations++;
                     data[j + 1] = data[j];
                     j--;
                 }
@@ -799,39 +791,36 @@ namespace Lab0_Task1_Programming.Controls
             long iterations = 0;
             int left = 0;
             int right = data.Length - 1;
-            bool swapped = true;
 
-            while (swapped && left < right)
+            while (left < right)
             {
-                swapped = false;
+                bool swapped = false;
+
                 for (int i = left; i < right; i++)
                 {
-                    iterations++;
                     if (ShouldSwap(data[i], data[i + 1], ascending))
                     {
                         (data[i], data[i + 1]) = (data[i + 1], data[i]);
                         swapped = true;
                     }
                 }
-
                 right--;
-                if (!swapped)
-                {
-                    break;
-                }
 
-                swapped = false;
                 for (int i = right; i > left; i--)
                 {
-                    iterations++;
                     if (ShouldSwap(data[i - 1], data[i], ascending))
                     {
                         (data[i - 1], data[i]) = (data[i], data[i - 1]);
                         swapped = true;
                     }
                 }
-
                 left++;
+
+                iterations++;
+                if (!swapped)
+                {
+                    break;
+                }
             }
 
             return iterations;
@@ -873,12 +862,14 @@ namespace Lab0_Task1_Programming.Controls
 
                 if (i <= j)
                 {
-                    iterations++;
                     (data[i], data[j]) = (data[j], data[i]);
                     i++;
                     j--;
                 }
             }
+
+            // Один законченный проход разбиения текущего рабочего диапазона.
+            iterations++;
 
             if (left < j)
             {
@@ -890,18 +881,21 @@ namespace Lab0_Task1_Programming.Controls
             }
         }
 
-        private static SortExecutionResult BogoSort(double[] data, bool ascending)
+        private static SortExecutionResult BogoSort(
+            double[] data,
+            bool ascending,
+            int maxIterations)
         {
             var random = new Random(2026);
-            int shuffles = 0;
+            int iterations = 0;
 
-            while (!IsSorted(data, ascending) && shuffles < MaxBogoShuffles)
+            while (!IsSorted(data, ascending) && iterations < maxIterations)
             {
                 Shuffle(data, random);
-                shuffles++;
+                iterations++;
             }
 
-            return new SortExecutionResult(IsSorted(data, ascending), shuffles);
+            return new SortExecutionResult(IsSorted(data, ascending), iterations);
         }
 
         private static void Shuffle(double[] data, Random random)
@@ -944,11 +938,6 @@ namespace Lab0_Task1_Programming.Controls
                 throw new InvalidDataException("Источник должен содержать минимум два числовых значения.");
             }
 
-            if (values.Count > MaxVisualValues)
-            {
-                throw new InvalidDataException(
-                    $"Найдено {values.Count} значений. Для визуализации допускается не более {MaxVisualValues}.");
-            }
 
             valuesDataGridView.Rows.Clear();
             foreach (double value in values)
