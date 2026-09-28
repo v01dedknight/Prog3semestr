@@ -24,14 +24,16 @@ namespace Lab0_Task1_Programming
             SetSelectedLabButton(labNumber);
 
             bool isLab0 = labNumber == 0;
+            bool isLab1 = labNumber == 1;
             bool isLab4 = labNumber == 4;
 
-            task1Button.Visible = isLab0 || isLab4;
+            task1Button.Visible = isLab0 || isLab1 || isLab4;
             task2Button.Visible = isLab0;
             taskMenuCaption.Text = $"Лаб. {labNumber} задания:";
 
             lab0Task1Point3Control.Visible = false;
             lab0Task2Point3Control.Visible = false;
+            lab1DichotomyControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
 
@@ -40,6 +42,11 @@ namespace Lab0_Task1_Programming
                 task1Button.Text = "Задание 1 п.3";
                 task2Button.Text = "Задание 2 п.3";
                 ShowTask1();
+            }
+            else if (isLab1)
+            {
+                task1Button.Text = "Задание";
+                ShowLab1Task();
             }
             else if (isLab4)
             {
@@ -58,7 +65,11 @@ namespace Lab0_Task1_Programming
 
         private void Task1Button_Click(object? sender, EventArgs e)
         {
-            if (_selectedLab == 4)
+            if (_selectedLab == 1)
+            {
+                ShowLab1Task();
+            }
+            else if (_selectedLab == 4)
             {
                 ShowLab4Task();
             }
@@ -84,6 +95,7 @@ namespace Lab0_Task1_Programming
                 "Определить толщину диска h, при которой его масса равна m.";
 
             lab0Task2Point3Control.Visible = false;
+            lab1DichotomyControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task1Point3Control.Visible = true;
@@ -101,12 +113,31 @@ namespace Lab0_Task1_Programming
                 "вычислить средний рост мужчин и женщин и найти самых высоких.";
 
             lab0Task1Point3Control.Visible = false;
+            lab1DichotomyControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task2Point3Control.Visible = true;
             lab0Task2Point3Control.BringToFront();
 
             SetSelectedTaskButton(2);
+        }
+
+        private void ShowLab1Task()
+        {
+            taskTitleLabel.Text = "Лабораторная работа №1 - Метод дихотомии";
+            taskDescriptionLabel.Text =
+                "По методичке: поиск локального минимума f(x) на [a, b] с точностью e. " +
+                "По брифингу преподавателя также доступен режим поиска корня по смене знака. " +
+                "График и расчёт запускаются отдельно через MenuStrip.";
+
+            lab0Task1Point3Control.Visible = false;
+            lab0Task2Point3Control.Visible = false;
+            lab4SortingControl.Visible = false;
+            emptyLabLabel.Visible = false;
+            lab1DichotomyControl.Visible = true;
+            lab1DichotomyControl.BringToFront();
+
+            SetSelectedTaskButton(1);
         }
 
         private void ShowLab4Task()
@@ -119,6 +150,7 @@ namespace Lab0_Task1_Programming
 
             lab0Task1Point3Control.Visible = false;
             lab0Task2Point3Control.Visible = false;
+            lab1DichotomyControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab4SortingControl.Visible = true;
             lab4SortingControl.BringToFront();

@@ -40,6 +40,7 @@ namespace Lab0_Task1_Programming
             emptyLabLabel = new Label();
             lab0Task2Point3Control = new Lab0_Task1_Programming.Controls.Lab0Task2Point3Control();
             lab0Task1Point3Control = new Lab0_Task1_Programming.Controls.Lab0Task1Point3Control();
+            lab1DichotomyControl = new Lab0_Task1_Programming.Controls.Lab1DichotomyControl();
             lab4SortingControl = new Lab0_Task1_Programming.Controls.Lab4SortingControl();
             rootLayout.SuspendLayout();
             labMenuPanel.SuspendLayout();
@@ -300,6 +301,7 @@ namespace Lab0_Task1_Programming
             // 
             contentPanel.Controls.Add(emptyLabLabel);
             contentPanel.Controls.Add(lab4SortingControl);
+            contentPanel.Controls.Add(lab1DichotomyControl);
             contentPanel.Controls.Add(lab0Task2Point3Control);
             contentPanel.Controls.Add(lab0Task1Point3Control);
             contentPanel.Dock = DockStyle.Fill;
@@ -320,6 +322,16 @@ namespace Lab0_Task1_Programming
             emptyLabLabel.TabIndex = 2;
             emptyLabLabel.Text = "Здесь позже появятся задания этой лабораторной.";
             emptyLabLabel.Visible = false;
+            // 
+            // lab1DichotomyControl
+            // 
+            lab1DichotomyControl.Dock = DockStyle.Fill;
+            lab1DichotomyControl.Location = new Point(18, 18);
+            lab1DichotomyControl.Name = "lab1DichotomyControl";
+            lab1DichotomyControl.Size = new Size(1144, 498);
+            lab1DichotomyControl.TabIndex = 4;
+            lab1DichotomyControl.Visible = false;
+            // 
             // 
             // lab4SortingControl
             // 
@@ -393,6 +405,7 @@ namespace Lab0_Task1_Programming
         private Panel contentPanel;
         private Controls.Lab0Task1Point3Control lab0Task1Point3Control;
         private Controls.Lab0Task2Point3Control lab0Task2Point3Control;
+        private Controls.Lab1DichotomyControl lab1DichotomyControl;
         private Controls.Lab4SortingControl lab4SortingControl;
         private Label emptyLabLabel;
     }
