@@ -25,15 +25,17 @@ namespace Lab0_Task1_Programming
 
             bool isLab0 = labNumber == 0;
             bool isLab1 = labNumber == 1;
+            bool isLab2 = labNumber == 2;
             bool isLab4 = labNumber == 4;
 
-            task1Button.Visible = isLab0 || isLab1 || isLab4;
+            task1Button.Visible = isLab0 || isLab1 || isLab2 || isLab4;
             task2Button.Visible = isLab0;
             taskMenuCaption.Text = $"Лаб. {labNumber} задания:";
 
             lab0Task1Point3Control.Visible = false;
             lab0Task2Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
+            lab2GoldenSectionControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
 
@@ -47,6 +49,11 @@ namespace Lab0_Task1_Programming
             {
                 task1Button.Text = "Задание";
                 ShowLab1Task();
+            }
+            else if (isLab2)
+            {
+                task1Button.Text = "Задание";
+                ShowLab2Task();
             }
             else if (isLab4)
             {
@@ -68,6 +75,10 @@ namespace Lab0_Task1_Programming
             if (_selectedLab == 1)
             {
                 ShowLab1Task();
+            }
+            else if (_selectedLab == 2)
+            {
+                ShowLab2Task();
             }
             else if (_selectedLab == 4)
             {
@@ -96,6 +107,7 @@ namespace Lab0_Task1_Programming
 
             lab0Task2Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
+            lab2GoldenSectionControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task1Point3Control.Visible = true;
@@ -114,6 +126,7 @@ namespace Lab0_Task1_Programming
 
             lab0Task1Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
+            lab2GoldenSectionControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task2Point3Control.Visible = true;
@@ -132,10 +145,29 @@ namespace Lab0_Task1_Programming
 
             lab0Task1Point3Control.Visible = false;
             lab0Task2Point3Control.Visible = false;
+            lab2GoldenSectionControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab1DichotomyControl.Visible = true;
             lab1DichotomyControl.BringToFront();
+
+            SetSelectedTaskButton(1);
+        }
+
+        private void ShowLab2Task()
+        {
+            taskTitleLabel.Text = "Лабораторная работа №2 - Метод золотого сечения";
+            taskDescriptionLabel.Text =
+                "Поиск минимума, максимума или обоих экстремумов функции f(x) на [a, b] " +
+                "методом золотого сечения с заданной точностью e. График показывает найденные точки.";
+
+            lab0Task1Point3Control.Visible = false;
+            lab0Task2Point3Control.Visible = false;
+            lab1DichotomyControl.Visible = false;
+            lab4SortingControl.Visible = false;
+            emptyLabLabel.Visible = false;
+            lab2GoldenSectionControl.Visible = true;
+            lab2GoldenSectionControl.BringToFront();
 
             SetSelectedTaskButton(1);
         }
@@ -151,6 +183,7 @@ namespace Lab0_Task1_Programming
             lab0Task1Point3Control.Visible = false;
             lab0Task2Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
+            lab2GoldenSectionControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab4SortingControl.Visible = true;
             lab4SortingControl.BringToFront();
