@@ -1,3 +1,5 @@
+#nullable enable
+
 namespace Lab0_Task1_Programming
 {
     partial class Form1
@@ -42,6 +44,7 @@ namespace Lab0_Task1_Programming
             lab0Task1Point3Control = new Lab0_Task1_Programming.Controls.Lab0Task1Point3Control();
             lab1DichotomyControl = new Lab0_Task1_Programming.Controls.Lab1DichotomyControl();
             lab2GoldenSectionControl = new Lab0_Task1_Programming.Controls.Lab2GoldenSectionControl();
+            lab3NewtonControl = new Lab0_Task1_Programming.Controls.Lab3NewtonControl();
             lab4SortingControl = new Lab0_Task1_Programming.Controls.Lab4SortingControl();
             rootLayout.SuspendLayout();
             labMenuPanel.SuspendLayout();
@@ -303,6 +306,7 @@ namespace Lab0_Task1_Programming
             contentPanel.Controls.Add(emptyLabLabel);
             contentPanel.Controls.Add(lab4SortingControl);
             contentPanel.Controls.Add(lab2GoldenSectionControl);
+            contentPanel.Controls.Add(lab3NewtonControl);
             contentPanel.Controls.Add(lab1DichotomyControl);
             contentPanel.Controls.Add(lab0Task2Point3Control);
             contentPanel.Controls.Add(lab0Task1Point3Control);
@@ -333,6 +337,16 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl.Size = new Size(1144, 498);
             lab2GoldenSectionControl.TabIndex = 5;
             lab2GoldenSectionControl.Visible = false;
+            // 
+            // 
+            // lab3NewtonControl
+            // 
+            lab3NewtonControl.Dock = DockStyle.Fill;
+            lab3NewtonControl.Location = new Point(18, 18);
+            lab3NewtonControl.Name = "lab3NewtonControl";
+            lab3NewtonControl.Size = new Size(1144, 498);
+            lab3NewtonControl.TabIndex = 6;
+            lab3NewtonControl.Visible = false;
             // 
             // 
             // lab1DichotomyControl
@@ -419,6 +433,7 @@ namespace Lab0_Task1_Programming
         private Controls.Lab0Task2Point3Control lab0Task2Point3Control;
         private Controls.Lab1DichotomyControl lab1DichotomyControl;
         private Controls.Lab2GoldenSectionControl lab2GoldenSectionControl;
+        private Controls.Lab3NewtonControl lab3NewtonControl;
         private Controls.Lab4SortingControl lab4SortingControl;
         private Label emptyLabLabel;
     }

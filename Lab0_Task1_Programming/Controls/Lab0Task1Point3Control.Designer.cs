@@ -1,3 +1,5 @@
+#nullable enable
+
 namespace Lab0_Task1_Programming.Controls
 {
     partial class Lab0Task1Point3Control

@@ -26,9 +26,10 @@ namespace Lab0_Task1_Programming
             bool isLab0 = labNumber == 0;
             bool isLab1 = labNumber == 1;
             bool isLab2 = labNumber == 2;
+            bool isLab3 = labNumber == 3;
             bool isLab4 = labNumber == 4;
 
-            task1Button.Visible = isLab0 || isLab1 || isLab2 || isLab4;
+            task1Button.Visible = isLab0 || isLab1 || isLab2 || isLab3 || isLab4;
             task2Button.Visible = isLab0;
             taskMenuCaption.Text = $"Лаб. {labNumber} задания:";
 
@@ -36,6 +37,7 @@ namespace Lab0_Task1_Programming
             lab0Task2Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
             lab2GoldenSectionControl.Visible = false;
+            lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
 
@@ -54,6 +56,11 @@ namespace Lab0_Task1_Programming
             {
                 task1Button.Text = "Задание";
                 ShowLab2Task();
+            }
+            else if (isLab3)
+            {
+                task1Button.Text = "Задание";
+                ShowLab3Task();
             }
             else if (isLab4)
             {
@@ -79,6 +86,10 @@ namespace Lab0_Task1_Programming
             else if (_selectedLab == 2)
             {
                 ShowLab2Task();
+            }
+            else if (_selectedLab == 3)
+            {
+                ShowLab3Task();
             }
             else if (_selectedLab == 4)
             {
@@ -108,6 +119,7 @@ namespace Lab0_Task1_Programming
             lab0Task2Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
             lab2GoldenSectionControl.Visible = false;
+            lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task1Point3Control.Visible = true;
@@ -127,6 +139,7 @@ namespace Lab0_Task1_Programming
             lab0Task1Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
             lab2GoldenSectionControl.Visible = false;
+            lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task2Point3Control.Visible = true;
@@ -146,6 +159,7 @@ namespace Lab0_Task1_Programming
             lab0Task1Point3Control.Visible = false;
             lab0Task2Point3Control.Visible = false;
             lab2GoldenSectionControl.Visible = false;
+            lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab1DichotomyControl.Visible = true;
@@ -172,6 +186,24 @@ namespace Lab0_Task1_Programming
             SetSelectedTaskButton(1);
         }
 
+        private void ShowLab3Task()
+        {
+            taskTitleLabel.Text = "Лабораторная работа №3 - Метод Ньютона";
+            taskDescriptionLabel.Text =
+                "Поиск внутренних минимумов и максимумов функции f(x) методом Ньютона на [a, b] " +
+                "с заданной точностью e. График показывает последовательные приближения x(n).";
+
+            lab0Task1Point3Control.Visible = false;
+            lab0Task2Point3Control.Visible = false;
+            lab1DichotomyControl.Visible = false;
+            lab2GoldenSectionControl.Visible = false;
+            lab4SortingControl.Visible = false;
+            emptyLabLabel.Visible = false;
+            lab3NewtonControl.Visible = true;
+            lab3NewtonControl.BringToFront();
+            SetSelectedTaskButton(1);
+        }
+
         private void ShowLab4Task()
         {
             taskTitleLabel.Text = "Лабораторная работа №4 - Олимпиадные сортировки";
@@ -184,6 +216,7 @@ namespace Lab0_Task1_Programming
             lab0Task2Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
             lab2GoldenSectionControl.Visible = false;
+            lab3NewtonControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab4SortingControl.Visible = true;
             lab4SortingControl.BringToFront();
