@@ -194,13 +194,13 @@ namespace Lab0_Task1_Programming.Controls
             AppendHeader(log, "Поиск минимума методом золотого сечения", formula, a, b, epsilon);
             SearchResult result = SearchExtremum(function, a, b, epsilon, findMaximum: false, log);
 
-            answerLabel.Text = $"Минимум: x ≈ {Format(result.X)}, f(x) ≈ {Format(result.Y)}";
-            iterationsLabel.Text = $"Итераций: {result.Iterations}; конечный интервал: [{Format(result.Left)}; {Format(result.Right)}]";
+            answerLabel.Text = $"Минимум: x ≈ {FormatResult(result.X)}, f(x) ≈ {FormatResult(result.Y)}";
+            iterationsLabel.Text = $"Итераций: {result.Iterations}; конечный интервал: [{FormatResult(result.Left)}; {FormatResult(result.Right)}]";
             calculationsTextBox.Text = log.ToString();
             SetDiagnostic(diagnostic);
 
             _lastMinimumX = result.X;
-            _lastMinimumLabel = $"min: x={Format(result.X)}, f={Format(result.Y)}";
+            _lastMinimumLabel = $"min: x={FormatResult(result.X)}, f={FormatResult(result.Y)}";
             SaveInput(formula, a, b);
             goldenSectionPlotPanel.SetPlot(function, a, b, result.X, _lastMinimumLabel);
         }
@@ -217,13 +217,13 @@ namespace Lab0_Task1_Programming.Controls
             AppendHeader(log, "Поиск максимума методом золотого сечения", formula, a, b, epsilon);
             SearchResult result = SearchExtremum(function, a, b, epsilon, findMaximum: true, log);
 
-            answerLabel.Text = $"Максимум: x ≈ {Format(result.X)}, f(x) ≈ {Format(result.Y)}";
-            iterationsLabel.Text = $"Итераций: {result.Iterations}; конечный интервал: [{Format(result.Left)}; {Format(result.Right)}]";
+            answerLabel.Text = $"Максимум: x ≈ {FormatResult(result.X)}, f(x) ≈ {FormatResult(result.Y)}";
+            iterationsLabel.Text = $"Итераций: {result.Iterations}; конечный интервал: [{FormatResult(result.Left)}; {FormatResult(result.Right)}]";
             calculationsTextBox.Text = log.ToString();
             SetDiagnostic(diagnostic);
 
             _lastMaximumX = result.X;
-            _lastMaximumLabel = $"max: x={Format(result.X)}, f={Format(result.Y)}";
+            _lastMaximumLabel = $"max: x={FormatResult(result.X)}, f={FormatResult(result.Y)}";
             SaveInput(formula, a, b);
             goldenSectionPlotPanel.SetPlot(function, a, b, null, null, result.X, _lastMaximumLabel);
         }
@@ -246,16 +246,16 @@ namespace Lab0_Task1_Programming.Controls
             SearchResult maximum = SearchExtremum(function, a, b, epsilon, findMaximum: true, log);
 
             answerLabel.Text =
-                $"min: x ≈ {Format(minimum.X)}, f ≈ {Format(minimum.Y)}    |    " +
-                $"max: x ≈ {Format(maximum.X)}, f ≈ {Format(maximum.Y)}";
+                $"min: x ≈ {FormatResult(minimum.X)}, f ≈ {FormatResult(minimum.Y)}    |    " +
+                $"max: x ≈ {FormatResult(maximum.X)}, f ≈ {FormatResult(maximum.Y)}";
             iterationsLabel.Text = $"Итераций: минимум — {minimum.Iterations}; максимум — {maximum.Iterations}";
             calculationsTextBox.Text = log.ToString();
             SetDiagnostic(diagnostic);
 
             _lastMinimumX = minimum.X;
             _lastMaximumX = maximum.X;
-            _lastMinimumLabel = $"min: x={Format(minimum.X)}, f={Format(minimum.Y)}";
-            _lastMaximumLabel = $"max: x={Format(maximum.X)}, f={Format(maximum.Y)}";
+            _lastMinimumLabel = $"min: x={FormatResult(minimum.X)}, f={FormatResult(minimum.Y)}";
+            _lastMaximumLabel = $"max: x={FormatResult(maximum.X)}, f={FormatResult(maximum.Y)}";
             SaveInput(formula, a, b);
 
             goldenSectionPlotPanel.SetPlot(
@@ -485,6 +485,11 @@ namespace Lab0_Task1_Programming.Controls
                 NumberStyles.Float,
                 CultureInfo.InvariantCulture,
                 out value);
+        }
+
+        private string FormatResult(double value)
+        {
+            return ResultPrecisionFormatter.Format(value, epsilonTextBox.Text);
         }
 
         private static string Format(double value)

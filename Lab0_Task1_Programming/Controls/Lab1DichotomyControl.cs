@@ -225,8 +225,8 @@ namespace Lab0_Task1_Programming.Controls
             double xMin = (left + right) / 2.0;
             double yMin = EvaluateFinite(function, xMin);
 
-            answerLabel.Text = $"Минимум: x ≈ {Format(xMin)}, f(x) ≈ {Format(yMin)}";
-            iterationsLabel.Text = $"Итераций: {iterations}; конечный интервал: [{Format(left)}; {Format(right)}]";
+            answerLabel.Text = $"Минимум: x ≈ {FormatResult(xMin)}, f(x) ≈ {FormatResult(yMin)}";
+            iterationsLabel.Text = $"Итераций: {iterations}; конечный интервал: [{FormatResult(left)}; {FormatResult(right)}]";
             calculationsTextBox.Text = log.ToString();
 
             warningLabel.ForeColor = SystemColors.GrayText;
@@ -234,7 +234,7 @@ namespace Lab0_Task1_Programming.Controls
                 ? "Результат относится к выбранному интервалу [a, b]."
                 : diagnostic;
 
-            SaveLastResult(formula, a, b, xMin, $"min: x={Format(xMin)}, f={Format(yMin)}");
+            SaveLastResult(formula, a, b, xMin, $"min: x={FormatResult(xMin)}, f={FormatResult(yMin)}");
             functionPlotPanel.SetPlot(function, a, b, xMin, _lastPointLabel);
         }
 
@@ -353,7 +353,7 @@ namespace Lab0_Task1_Programming.Controls
             StringBuilder log,
             List<string> diagnosticParts)
         {
-            answerLabel.Text = $"Корень: x ≈ {Format(root)}, f(x) ≈ {Format(fRoot)}";
+            answerLabel.Text = $"Корень: x ≈ {FormatResult(root)}, f(x) ≈ {FormatResult(fRoot)}";
             iterationsLabel.Text = $"Итераций: {iterations}; заданная точность e = {Format(epsilon)}";
             calculationsTextBox.Text = log.ToString();
 
@@ -362,7 +362,7 @@ namespace Lab0_Task1_Programming.Controls
                 ? string.Join(" ", diagnosticParts)
                 : "Смена знака на интервале найдена. Результат относится к выбранному интервалу.";
 
-            SaveLastResult(formula, a, b, root, $"root: x={Format(root)}, f={Format(fRoot)}");
+            SaveLastResult(formula, a, b, root, $"root: x={FormatResult(root)}, f={FormatResult(fRoot)}");
             functionPlotPanel.SetPlot(function, a, b, root, _lastPointLabel);
         }
 
@@ -517,6 +517,11 @@ namespace Lab0_Task1_Programming.Controls
                 NumberStyles.Float,
                 CultureInfo.InvariantCulture,
                 out value);
+        }
+
+        private string FormatResult(double value)
+        {
+            return ResultPrecisionFormatter.Format(value, epsilonTextBox.Text);
         }
 
         private static string Format(double value)
