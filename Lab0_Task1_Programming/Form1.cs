@@ -31,7 +31,7 @@ namespace Lab0_Task1_Programming
 
             task1Button.Visible = isLab0 || isLab1 || isLab2 || isLab3 || isLab4;
             task2Button.Visible = isLab0;
-            taskMenuCaption.Text = $"Лаб. {labNumber} задания:";
+            taskMenuCaption.Text = labNumber == -1 ? "Контрольная работа" : $"Лаб. {labNumber} задания:";
 
             lab0Task1Point3Control.Visible = false;
             lab0Task2Point3Control.Visible = false;
@@ -39,9 +39,14 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
+            quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
 
-            if (isLab0)
+            if (labNumber == -1)
+            {
+                ShowControlWork();
+            }
+            else if (isLab0)
             {
                 task1Button.Text = "Задание 1 п.3";
                 task2Button.Text = "Задание 2 п.3";
@@ -121,6 +126,7 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
+            quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task1Point3Control.Visible = true;
             lab0Task1Point3Control.BringToFront();
@@ -141,6 +147,7 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
+            quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task2Point3Control.Visible = true;
             lab0Task2Point3Control.BringToFront();
@@ -161,6 +168,7 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
+            quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab1DichotomyControl.Visible = true;
             lab1DichotomyControl.BringToFront();
@@ -179,6 +187,7 @@ namespace Lab0_Task1_Programming
             lab0Task2Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
             lab4SortingControl.Visible = false;
+            quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab2GoldenSectionControl.Visible = true;
             lab2GoldenSectionControl.BringToFront();
@@ -198,6 +207,7 @@ namespace Lab0_Task1_Programming
             lab1DichotomyControl.Visible = false;
             lab2GoldenSectionControl.Visible = false;
             lab4SortingControl.Visible = false;
+            quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab3NewtonControl.Visible = true;
             lab3NewtonControl.BringToFront();
@@ -217,11 +227,30 @@ namespace Lab0_Task1_Programming
             lab1DichotomyControl.Visible = false;
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
+            quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab4SortingControl.Visible = true;
             lab4SortingControl.BringToFront();
 
             SetSelectedTaskButton(1);
+        }
+
+        private void ShowControlWork()
+        {
+            taskTitleLabel.Text = "Контрольная работа - Квадратные уравнения";
+            taskDescriptionLabel.Text =
+                "Решение ax² + bx + c = 0 через дискриминант, проверка по теореме Виета " +
+                "и график параболы с найденными действительными корнями.";
+
+            lab0Task1Point3Control.Visible = false;
+            lab0Task2Point3Control.Visible = false;
+            lab1DichotomyControl.Visible = false;
+            lab2GoldenSectionControl.Visible = false;
+            lab3NewtonControl.Visible = false;
+            lab4SortingControl.Visible = false;
+            emptyLabLabel.Visible = false;
+            quadraticEquationControl.Visible = true;
+            quadraticEquationControl.BringToFront();
         }
 
         private void SetSelectedLabButton(int selectedLab)

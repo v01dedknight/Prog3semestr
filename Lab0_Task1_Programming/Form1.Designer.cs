@@ -31,6 +31,7 @@ namespace Lab0_Task1_Programming
             lab6Button = new Button();
             lab7Button = new Button();
             lab8Button = new Button();
+            controlWorkButton = new Button();
             taskMenuPanel = new FlowLayoutPanel();
             taskMenuCaption = new Label();
             task1Button = new Button();
@@ -46,6 +47,7 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl = new Lab0_Task1_Programming.Controls.Lab2GoldenSectionControl();
             lab3NewtonControl = new Lab0_Task1_Programming.Controls.Lab3NewtonControl();
             lab4SortingControl = new Lab0_Task1_Programming.Controls.Lab4SortingControl();
+            quadraticEquationControl = new Lab0_Task1_Programming.Controls.QuadraticEquationControl();
             rootLayout.SuspendLayout();
             labMenuPanel.SuspendLayout();
             taskMenuPanel.SuspendLayout();
@@ -86,6 +88,7 @@ namespace Lab0_Task1_Programming
             labMenuPanel.Controls.Add(lab6Button);
             labMenuPanel.Controls.Add(lab7Button);
             labMenuPanel.Controls.Add(lab8Button);
+            labMenuPanel.Controls.Add(controlWorkButton);
             labMenuPanel.Dock = DockStyle.Fill;
             labMenuPanel.Location = new Point(0, 0);
             labMenuPanel.Margin = new Padding(0);
@@ -214,6 +217,18 @@ namespace Lab0_Task1_Programming
             lab8Button.UseVisualStyleBackColor = true;
             lab8Button.Click += LabButton_Click;
             // 
+            // controlWorkButton
+            // 
+            controlWorkButton.Location = new Point(932, 12);
+            controlWorkButton.Margin = new Padding(0, 0, 8, 0);
+            controlWorkButton.Name = "controlWorkButton";
+            controlWorkButton.Size = new Size(140, 34);
+            controlWorkButton.TabIndex = 10;
+            controlWorkButton.Tag = -1;
+            controlWorkButton.Text = "Контрольная";
+            controlWorkButton.UseVisualStyleBackColor = true;
+            controlWorkButton.Click += LabButton_Click;
+            // 
             // taskMenuPanel
             // 
             taskMenuPanel.AutoScroll = true;
@@ -305,6 +320,7 @@ namespace Lab0_Task1_Programming
             // 
             contentPanel.Controls.Add(emptyLabLabel);
             contentPanel.Controls.Add(lab4SortingControl);
+            contentPanel.Controls.Add(quadraticEquationControl);
             contentPanel.Controls.Add(lab2GoldenSectionControl);
             contentPanel.Controls.Add(lab3NewtonControl);
             contentPanel.Controls.Add(lab1DichotomyControl);
@@ -368,6 +384,14 @@ namespace Lab0_Task1_Programming
             lab4SortingControl.TabIndex = 3;
             lab4SortingControl.Visible = false;
             // 
+            // quadraticEquationControl
+            // 
+            quadraticEquationControl.Dock = DockStyle.Fill;
+            quadraticEquationControl.Location = new Point(18, 18);
+            quadraticEquationControl.Name = "quadraticEquationControl";
+            quadraticEquationControl.Size = new Size(1144, 498);
+            quadraticEquationControl.TabIndex = 7;
+            quadraticEquationControl.Visible = false;
             // 
             // lab0Task2Point3Control
             // 
@@ -421,6 +445,7 @@ namespace Lab0_Task1_Programming
         private Button lab6Button;
         private Button lab7Button;
         private Button lab8Button;
+        private Button controlWorkButton;
         private FlowLayoutPanel taskMenuPanel;
         private Label taskMenuCaption;
         private Button task1Button;
@@ -435,6 +460,7 @@ namespace Lab0_Task1_Programming
         private Controls.Lab2GoldenSectionControl lab2GoldenSectionControl;
         private Controls.Lab3NewtonControl lab3NewtonControl;
         private Controls.Lab4SortingControl lab4SortingControl;
+        private Controls.QuadraticEquationControl quadraticEquationControl;
         private Label emptyLabLabel;
     }
 }
