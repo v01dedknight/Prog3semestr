@@ -47,6 +47,7 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl = new Lab0_Task1_Programming.Controls.Lab2GoldenSectionControl();
             lab3NewtonControl = new Lab0_Task1_Programming.Controls.Lab3NewtonControl();
             lab4SortingControl = new Lab0_Task1_Programming.Controls.Lab4SortingControl();
+            lab5IntegrationControl = new Lab0_Task1_Programming.Controls.Lab5IntegrationControl();
             quadraticEquationControl = new Lab0_Task1_Programming.Controls.QuadraticEquationControl();
             rootLayout.SuspendLayout();
             labMenuPanel.SuspendLayout();
@@ -320,6 +321,7 @@ namespace Lab0_Task1_Programming
             // 
             contentPanel.Controls.Add(emptyLabLabel);
             contentPanel.Controls.Add(lab4SortingControl);
+            contentPanel.Controls.Add(lab5IntegrationControl);
             contentPanel.Controls.Add(quadraticEquationControl);
             contentPanel.Controls.Add(lab2GoldenSectionControl);
             contentPanel.Controls.Add(lab3NewtonControl);
@@ -383,6 +385,16 @@ namespace Lab0_Task1_Programming
             lab4SortingControl.Size = new Size(1144, 498);
             lab4SortingControl.TabIndex = 3;
             lab4SortingControl.Visible = false;
+            // 
+            // 
+            // lab5IntegrationControl
+            // 
+            lab5IntegrationControl.Dock = DockStyle.Fill;
+            lab5IntegrationControl.Location = new Point(18, 18);
+            lab5IntegrationControl.Name = "lab5IntegrationControl";
+            lab5IntegrationControl.Size = new Size(1144, 498);
+            lab5IntegrationControl.TabIndex = 8;
+            lab5IntegrationControl.Visible = false;
             // 
             // quadraticEquationControl
             // 
@@ -460,6 +472,7 @@ namespace Lab0_Task1_Programming
         private Controls.Lab2GoldenSectionControl lab2GoldenSectionControl;
         private Controls.Lab3NewtonControl lab3NewtonControl;
         private Controls.Lab4SortingControl lab4SortingControl;
+        private Controls.Lab5IntegrationControl lab5IntegrationControl;
         private Controls.QuadraticEquationControl quadraticEquationControl;
         private Label emptyLabLabel;
     }

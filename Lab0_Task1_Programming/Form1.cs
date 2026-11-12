@@ -28,8 +28,9 @@ namespace Lab0_Task1_Programming
             bool isLab2 = labNumber == 2;
             bool isLab3 = labNumber == 3;
             bool isLab4 = labNumber == 4;
+            bool isLab5 = labNumber == 5;
 
-            task1Button.Visible = isLab0 || isLab1 || isLab2 || isLab3 || isLab4;
+            task1Button.Visible = isLab0 || isLab1 || isLab2 || isLab3 || isLab4 || isLab5;
             task2Button.Visible = isLab0;
             taskMenuCaption.Text = labNumber == -1 ? "Контрольная работа" : $"Лаб. {labNumber} задания:";
 
@@ -39,6 +40,7 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
+            lab5IntegrationControl.Visible = false;
             quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
 
@@ -72,6 +74,11 @@ namespace Lab0_Task1_Programming
                 task1Button.Text = "Задание";
                 ShowLab4Task();
             }
+            else if (isLab5)
+            {
+                task1Button.Text = "Задание";
+                ShowLab5Task();
+            }
             else
             {
                 taskTitleLabel.Text = $"Лабораторная работа №{labNumber}";
@@ -100,6 +107,10 @@ namespace Lab0_Task1_Programming
             {
                 ShowLab4Task();
             }
+            else if (_selectedLab == 5)
+            {
+                ShowLab5Task();
+            }
             else
             {
                 ShowTask1();
@@ -126,6 +137,7 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
+            lab5IntegrationControl.Visible = false;
             quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task1Point3Control.Visible = true;
@@ -147,6 +159,7 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
+            lab5IntegrationControl.Visible = false;
             quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab0Task2Point3Control.Visible = true;
@@ -168,6 +181,7 @@ namespace Lab0_Task1_Programming
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
             lab4SortingControl.Visible = false;
+            lab5IntegrationControl.Visible = false;
             quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab1DichotomyControl.Visible = true;
@@ -187,6 +201,7 @@ namespace Lab0_Task1_Programming
             lab0Task2Point3Control.Visible = false;
             lab1DichotomyControl.Visible = false;
             lab4SortingControl.Visible = false;
+            lab5IntegrationControl.Visible = false;
             quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab2GoldenSectionControl.Visible = true;
@@ -207,6 +222,7 @@ namespace Lab0_Task1_Programming
             lab1DichotomyControl.Visible = false;
             lab2GoldenSectionControl.Visible = false;
             lab4SortingControl.Visible = false;
+            lab5IntegrationControl.Visible = false;
             quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab3NewtonControl.Visible = true;
@@ -227,11 +243,33 @@ namespace Lab0_Task1_Programming
             lab1DichotomyControl.Visible = false;
             lab2GoldenSectionControl.Visible = false;
             lab3NewtonControl.Visible = false;
+            lab5IntegrationControl.Visible = false;
             quadraticEquationControl.Visible = false;
             emptyLabLabel.Visible = false;
             lab4SortingControl.Visible = true;
             lab4SortingControl.BringToFront();
 
+            SetSelectedTaskButton(1);
+        }
+
+        private void ShowLab5Task()
+        {
+            taskTitleLabel.Text = "Лабораторная работа №5 — Вычисление определённого интеграла";
+            taskDescriptionLabel.Text =
+                "Левые, правые и средние прямоугольники, трапеции и метод Симпсона. " +
+                "Одновременный выбор CheckBox, оценка точности e по Рунге, подбор n " +
+                "и графическое отображение истории разбиений.";
+
+            lab0Task1Point3Control.Visible = false;
+            lab0Task2Point3Control.Visible = false;
+            lab1DichotomyControl.Visible = false;
+            lab2GoldenSectionControl.Visible = false;
+            lab3NewtonControl.Visible = false;
+            lab4SortingControl.Visible = false;
+            quadraticEquationControl.Visible = false;
+            emptyLabLabel.Visible = false;
+            lab5IntegrationControl.Visible = true;
+            lab5IntegrationControl.BringToFront();
             SetSelectedTaskButton(1);
         }
 
